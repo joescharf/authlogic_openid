@@ -108,7 +108,7 @@ module AuthlogicOpenid
             end
             return
           end
-          controller.send(:authenticate_with_open_id, openid_identifier, :return_to => controller.url_for(:for_session => "1", :remember_me => remember_me?)) do |result, openid_identifier|
+          controller.send(:authenticate_with_open_id, openid_identifier, :return_to => controller.url_for(:for_session => "1", :remember_me => remember_me?, :secure => true)) do |result, openid_identifier|
             if result.unsuccessful?
               errors.add_to_base(result.message)
               return
