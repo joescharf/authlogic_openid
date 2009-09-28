@@ -92,7 +92,7 @@ module AuthlogicOpenid
           options = {}
           options[:required] = self.class.openid_required_fields
           options[:optional] = self.class.openid_optional_fields
-          options[:return_to] = session_class.controller.url_for(:for_model => "1",:controller=>"users",:action=>"create")
+          options[:return_to] = session_class.controller.url_for(:for_model => "1",:controller=>"users",:action=>"create", :secure => true)
           
           session_class.controller.send(:authenticate_with_open_id, openid_identifier, options) do |result, openid_identifier, registration|
             if result.unsuccessful?
