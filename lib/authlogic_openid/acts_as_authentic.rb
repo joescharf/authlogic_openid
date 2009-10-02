@@ -72,7 +72,13 @@ module AuthlogicOpenid
       def save(perform_validation = true, &block)
         return false if perform_validation && block_given? && authenticate_with_openid? && !authenticate_with_openid
         
-        return false if new_record? && !openid_complete?
+        # quantipay: Added && using_openid? otherwise authlogic_ldap plugin never is able to add a user to the db because
+        # new_record? is true when authlogic_ldap creates the new user record, and openid_complete returns false b/c neither of the
+        # applicable openid params are set, therefore new_record? && !openid_complete? evaluates to true, and the save returns false
+        # and super is never executed.
+        #
+        # We should only return false under these conditions if we're using_openid? 
+        return false if new_record? && !openid_complete? && using_openid? # Added using_openid? otherwise authlogic_ldap fails to add user b/c we never get past this
         result = super
         yield(result) if block_given?
         result
