@@ -78,7 +78,7 @@ module AuthlogicOpenid
         # and super is never executed.
         #
         # We should only return false under these conditions if we're using_openid? 
-        return false if new_record? && !openid_complete? && using_openid? # Added using_openid? otherwise authlogic_ldap fails to add user b/c we never get past this
+        return false if new_record? && using_openid? && !openid_complete?  # Added using_openid? otherwise authlogic_ldap fails to add user b/c we never get past this
         result = super
         yield(result) if block_given?
         result
